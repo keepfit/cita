@@ -65,3 +65,5 @@ admintool/txtool/output/
 tests/wrk_benchmark_test/data/
 tests/wrk_benchmark_test/chain_performance.profile
 tests/wrk_benchmark_test/*.txt
+
+genesis.json

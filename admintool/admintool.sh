@@ -2,13 +2,10 @@
 display_help()
 {
     echo 
-    echo "usage: $0 -a admin_id -p admin_pubkey -l ip_list -n consensus_name -m crypto_method -d block_duration -t -b block_tx_limit -f tx_filter_size"
+    echo "usage: $0 -a admin_id -l ip_list -n consensus_name -m crypto_method -d block_duration -t -b block_tx_limit -f tx_filter_size"
     echo "option:"
     echo "-a admin_id    admin identifier"
     echo "    default value is 'admin'"
-    echo
-    echo "-p admin_pubkey    set admin pubkey"
-    echo "    default value is random generated"
     echo
     echo "-l ip_list     list all the node's IP and port"
     echo "    default value is '127.0.0.1:4000,127.0.0.1:4001,127.0.0.1:4002,127.0.0.1:4003'"
@@ -46,12 +43,10 @@ display_help()
 }
 
 # parse options
-while getopts 'a:p:l:n:m:d:tb:f:c:h:w:P:' OPT; do
+while getopts 'a:l:n:m:d:tb:f:c:h:w:P:' OPT; do
     case $OPT in
         a)
             ADMIN_ID="$OPTARG";;
-        p)
-            ADMIN_PUBKEY="$OPTARG";;
         l)
             IP_LIST="$OPTARG";;
         n)
@@ -130,7 +125,9 @@ fi
 echo "Step 1: ********************************************************"
 echo "Start Genesis Block's Configuration creating!"
 python create_keys_addr.py $DATA_PATH 
-python create_genesis.py $ADMIN_ID $CRYPTO_METHOD $DATA_PATH $ADMIN_PUBKEY
+python create_genesis.py --authorities "$DATA_PATH/authorities"
+
+mv genesis.json $DATA_PATH/genesis.json
 
 if [ -f "$DATA_PATH/authorities" ]; then
     rm $DATA_PATH/authorities
